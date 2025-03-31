@@ -165,7 +165,8 @@ class DataEmbedding_wo_temp(nn.Module):
             d_model=d_model, embed_type=embed_type, freq=freq)
         self.dropout = nn.Dropout(p=dropout)
 
-    def forward(self, x, x_mark):
+    #def forward(self, x, x_mark):
+    def forward(self, x):
         x = self.value_embedding(x) + self.position_embedding(x)
         return self.dropout(x)
 
@@ -531,7 +532,8 @@ class Transformer(nn.Module):
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None,
                 enc_self_mask=None, dec_self_mask=None, dec_enc_mask=None):
 
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
+        #enc_out = self.enc_embedding(x_enc, x_mark_enc)
+        enc_out = self.enc_embedding(x_enc)
         # print(enc_out.shape) 
         out, attns = self.encoder(enc_out, attn_mask=enc_self_mask)
         # out [bs, num_node, embedding_dim]

@@ -32,7 +32,7 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 
-
+"""
 parser = argparse.ArgumentParser(description='Training')
 
 # parser.add_argument('--dataset_type', default="32x32", type=str,
@@ -72,6 +72,22 @@ except:
     args = parser.parse_args()
 pp.pprint(args.__dict__)
 
+"""
+class Args:
+    epochs = 1000
+    lr = 0.00005
+    inspect_interval = 100
+    id = "0"
+    init_boudary_loc = "regular"
+    trans_layer = 3
+    boundary_dim = 128
+    batch_size = 1
+    act = "silu"
+    nmlp_layers = 3
+    ns = 10
+
+args = Args()
+pp.pprint(args.__dict__)
 
 # dataset_type = args.dataset_type
 # ## ===============================================================

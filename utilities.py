@@ -31,7 +31,7 @@ class MeshGenerator(object):
                 # grids.append(np.linspace(real_space[j][0]+(0.5/mesh_size[j]), real_space[j][1]-(0.5/mesh_size[j]), mesh_size[j]))
                 self.n *= mesh_size[j]
         
-        
+        # self.n is the total number of grid points
         
         self.idx = np.array(range(self.n))
         self.grid=grid_input
@@ -48,6 +48,7 @@ class MeshGenerator(object):
         return torch.tensor(self.grid_sample, dtype=torch.float)      
 
     def deduplicate_rows(tensor):
+        # This function is used to deduplicate the rows of a tensor
         unique_rows = []
         seen_rows = set()
         for row in tensor:
@@ -59,21 +60,39 @@ class MeshGenerator(object):
         return deduplicated_tensor
 
     def ball_connectivity(self, is_forward=False,ns=10,tri_edge=None):
-            self.pwd = sklearn.metrics.pairwise_distances(self.grid_sample)
-            tri_edge = tri_edge.T
+        # 1. Compute pairwise distances between all points in the grid
+            self.pwd = sklearn.metrics.pairwise_distances(self.grid_sample) 
+            if tri_edge is not None:
+                tri_edge = tri_edge.T
             
+            
+            # 2. Create nearest neighbor connections
             edge_index_1=np.array([])
             edge_index_2=np.array([])
             for i in range(self.grid_sample.shape[0]):
+                # For each point i, connect it to its ns+1 nearest neighbors
                 edge_index_1=np.append(edge_index_1,np.array([i]).repeat(ns+1))
+                # argsort returns indices of ns+1 closest points to point i
                 edge_index_2=np.append(edge_index_2,np.argsort(self.pwd[i])[:ns+1]) 
-            self.edge_index = np.vstack([edge_index_1,edge_index_2])
-            self.edge_index = np.concatenate([self.edge_index,tri_edge],-1) 
+                
+            # 3. Combine nearest neighbor connections with triangulation edges
+            self.edge_index = np.vstack([edge_index_1,edge_index_2]) # Stack source and target indices
+            
+            if tri_edge is not None:
+                self.edge_index = np.concatenate([self.edge_index,tri_edge],-1)  # Add triangulation edges
 
             self.edge_index=torch.tensor(self.edge_index)
+            
+            # Make the graph undirected by adding reverse edges
             self.edge_index = torch.cat([self.edge_index, self.edge_index.flip(0)], dim=1) 
+            
+            # Remove duplicate edges
             self.edge_index = MeshGenerator.deduplicate_rows(self.edge_index.T).T
+            
+            # Count the number of edges
             self.n_edges = self.edge_index.shape[1]
+            
+            # Optional: keep only forward edges if is_forward is True
             if is_forward:
                 print(self.edge_index.shape)
                 self.edge_index = self.edge_index[:, self.edge_index[0] >= self.edge_index[1]]
@@ -209,6 +228,11 @@ class RandomMeshGenerator(object):
         self.grid_sample = self.grid[self.idx]
         return self.idx
 
+    def poisson_disk_sample(self, idx): 
+        self.idx = torch.tensor(idx)
+        self.grid_sample = self.grid[self.idx]
+        return self.idx
+    
     def get_grid(self):
         return torch.tensor(self.grid_sample, dtype=torch.float)
 

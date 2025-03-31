@@ -74,6 +74,8 @@ except:
 pp.pprint(args.__dict__)
 
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 DATA_PATH = f"data/"
 f_all = np.load(DATA_PATH + "RHS_N32_10.npy")[:9,:,:]
 sol_all = np.load(DATA_PATH + "SOL_N32_10.npy")[:9,:,:]
@@ -199,7 +201,8 @@ u_normalizer = GaussianNormalizer(x=indomain_u)
 train_u = u_normalizer.encode(train_u)
 
 grid_input=f_all[0,:,0:2]
-meshgenerator = RandomMeshGenerator([[0,1],[0,1]],[s,s], sample_size=m, grid_input = grid_input)
+meshgenerator = RandomMeshGenerator([[0,1],[0,1]],[s,s], sample_size=m)#, grid_input = grid_input)
+#meshgenerator = MeshGenerator([[0,1],[0,1]],[s,s], grid_input = grid_input) # mesh_size=m,
 data_test = []
 for j in range(ntest):
 
@@ -241,6 +244,7 @@ for j in range(ntest):
     
     
     idx = meshgenerator.poisson_disk_sample(mesh_idx_temp)
+    #idx = meshgenerator.sample(mesh_idx_temp)
     grid = meshgenerator.get_grid()
     
     xx=to_np_array(grid[:,0])   
@@ -248,8 +252,10 @@ for j in range(ntest):
     triang = tri.Triangulation(xx, yy)
     tri_edge = triang.edges    
 
-    edge_index = meshgenerator.ball_connectivity_dist_0(radius_train,ns=10,tri_edge=tri_edge)
-    edge_attr = meshgenerator.attributes_dist_neo7(theta=test_a[j,:])
+    #edge_index = meshgenerator.ball_connectivity_dist0(radius_train,ns=10,tri_edge=tri_edge)
+    edge_index = meshgenerator.ball_connectivity(radius_train)#,ns=10,tri_edge=tri_edge)
+    #edge_attr = meshgenerator.attributes_dist_neo7(theta=test_a[j,:])
+    edge_attr = meshgenerator.attributes(theta=test_a[j,:])
     
     test_x = torch.cat([grid, test_a[j, idx].reshape(-1, 1),
                         test_a_smooth[j, idx].reshape(-1, 1), test_a_gradx[j, idx].reshape(-1, 1),
@@ -293,7 +299,8 @@ else:
 model = HeteroGNS(nnode_in_features = node_features, nnode_out_features = 1, nedge_in_features = edge_features, nmlp_layers=args.nmlp_layers,
              activation = activation,boundary_dim = args.boundary_dim,trans_layer = trans_layer).to(device)
 
-filename_model='Non-zero_Resolution_32_poisson_dataset_4corners_ntrain900_kerwidth256_m01000_radius0.46875_Transformer_layer3_Rollingregular_nd11_nd215_nheads2_bddim128_actsilulr5e-05new_nmlp_layers3_TRANS_ns10_nstep10_bcnorm_0corner'
+#filename_model='Non-zero_Resolution_32_poisson_dataset_4corners_ntrain900_kerwidth256_m01000_radius0.46875_Transformer_layer3_Rollingregular_nd11_nd215_nheads2_bddim128_actsilulr5e-05new_nmlp_layers3_TRANS_ns10_nstep10_bcnorm_0corner'
+filename_model = 'Resolution_32_poisson_ntrain7_kerwidth256_Transformer_layer3_Rollingregular_ns10_nheads2_bddim128_actsilulr5e-05_nmlp_layers3'
 filename = filename_model + '_Test_NOcorners'
 
 

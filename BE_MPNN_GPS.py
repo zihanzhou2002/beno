@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn import MessagePassing
 from transformer import *
+from transformer_gps import *
 import pdb
 
 def build_mlp(
@@ -77,10 +78,12 @@ class Encoder(nn.Module):
           self,
           x: torch.tensor,
           edge_features: torch.tensor,
+          boundary_edge_features: torch.tensor,
           x_inbd:torch.tensor,
-          edge_inbd_features: torch.tensor):
+          edge_inbd_features: torch.tensor,
+          boundary_inbd_edge_features: torch.tensor):
 
-    return self.node_fn(x), self.edge_fn(edge_features), self.node_fn_inbd(x_inbd), self.edge_fn_inbd(edge_inbd_features)
+    return self.node_fn(x), self.edge_fn(edge_features), self.edge_fn(boundary_edge_features), self.node_fn_inbd(x_inbd), self.edge_fn_inbd(edge_inbd_features), self.edge_fn_inbd(boundary_inbd_edge_features)
 
 
 class InteractionNetwork(MessagePassing):
@@ -113,19 +116,21 @@ class InteractionNetwork(MessagePassing):
                                    nn.LayerNorm(nedge_out)])
 
     #boundary
-    self.boundary_fn = Transformer(enc_in = 3, d_model = boundary_dim, n_heads = 2, enc_layers = trans_layer)
-
+    #self.boundary_fn = Transformer(enc_in = 3, d_model = boundary_dim, n_heads = 2, enc_layers = trans_layer)
+    self.boundary_fn = GPS(enc_in = 3, d_model = boundary_dim, n_heads = 4, GPSConv_layers = trans_layer)
+    
   def forward(self,
               x: torch.tensor,
               edge_index: torch.tensor,
               edge_features: torch.tensor,
               boundary: torch.tensor,
-              
+              boundary_edge_index: torch.tensor,
+              boundary_edge_features: torch.tensor,
               ):
 
     boundary = boundary.unsqueeze(0).float()
    
-    boundary = self.boundary_fn(boundary)
+    boundary = self.boundary_fn(boundary, boundary_edge_index, boundary_edge_features)
    
     x_residual = x.clone()
     edge_features_residual = edge_features.clone()
@@ -223,16 +228,20 @@ class Processor(MessagePassing):
               edge_index: torch.tensor,
               edge_features: torch.tensor,
               boundary:torch.tensor,
+              boundary_edge_index: torch.tensor,
+              boundary_edge_features: torch.tensor,
               x_inbd: torch.tensor,
               edge_inbd_index: torch.tensor,
               edge_inbd_features: torch.tensor,
-              boundary_inbd:torch.tensor):  
+              boundary_inbd:torch.tensor,
+              boundary_inbd_edge_index: torch.tensor,
+              boundary_inbd_edge_features: torch.tensor):
 
     for gnn in self.gnn_stacks:
-      x, edge_features= gnn(x, edge_index, edge_features,boundary )  
+      x, edge_features= gnn(x, edge_index, edge_features,boundary, boundary_edge_index, boundary_edge_features)  
       
     for gnn in self.gnn_stacks_inbd:
-      x_inbd, edge_inbd_features = gnn(x_inbd, edge_inbd_index, edge_inbd_features,boundary_inbd)  
+      x_inbd, edge_inbd_features = gnn(x_inbd, edge_inbd_index, edge_inbd_features,boundary_inbd, boundary_inbd_edge_index, boundary_inbd_edge_features)  
     
     return x, edge_features, x_inbd, edge_inbd_features
 
@@ -262,7 +271,7 @@ class Decoder(nn.Module):
 
     return u
 
-class HeteroGNS(nn.Module):
+class HeteroGNSGPS(nn.Module):
   def __init__(
       self,
       nnode_in_features: int,
@@ -277,7 +286,7 @@ class HeteroGNS(nn.Module):
       trans_layer: int =3,
   ):
 
-    super(HeteroGNS, self).__init__()
+    super(HeteroGNSGPS, self).__init__()
     self._encoder = Encoder(
         nnode_in_features=nnode_in_features,
         nnode_out_features=latent_dim,
@@ -312,12 +321,12 @@ class HeteroGNS(nn.Module):
 
   def forward(self,data):
 
-    x, edge_index, edge_features,boundary = data['G1'].x, data['G1'].edge_index, data['G1'].edge_features,data['G1'].boundary
-    x_inbd, edge_inbd_index, edge_inbd_features,boundary_inbd = data['G2'].x, data['G2'].edge_index,data['G2'].edge_features,data['G2'].boundary
+    x, edge_index, edge_features,boundary, boundary_edge_index, boundary_edge_features = data['G1'].x, data['G1'].edge_index, data['G1'].edge_features,data['G1'].boundary, data['G1'].bd_edge_index, data['G1'].bd_edge_features
+    x_inbd, edge_inbd_index, edge_inbd_features,boundary_inbd, boundary_inbd_edge_index, boundary_inbd_edge_features = data['G2'].x, data['G2'].edge_index,data['G2'].edge_features,data['G2'].boundary, data['G2'].bd_edge_index, data['G2'].bd_edge_features
 
-    x, edge_features,x_inbd,edge_inbd_features = self._encoder(x, edge_features,x_inbd,edge_inbd_features)
+    x, edge_features, boundary_edge_features, x_inbd,edge_inbd_features, boundary_inbd_edge_features = self._encoder(x, edge_features, boundary_edge_features, x_inbd,edge_inbd_features, boundary_inbd_edge_features)
 
-    x, edge_features, x_inbd, edge_inbd_features = self._processor(x, edge_index, edge_features, boundary,x_inbd,edge_inbd_index, edge_inbd_features,boundary_inbd)
+    x, edge_features, x_inbd, edge_inbd_features = self._processor(x, edge_index, edge_features, boundary, boundary_edge_index, boundary_edge_features,x_inbd,edge_inbd_index, edge_inbd_features,boundary_inbd, boundary_inbd_edge_index, boundary_inbd_edge_features)
 
     u = self._decoder(x,x_inbd)
 

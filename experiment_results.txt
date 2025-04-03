@@ -1,0 +1,85 @@
+GPS 3 corners 100 samples 
+Train: 0.5370925629394395 +- 0.21473534160015592
+Test: 1.5750890033841134 +- 0.2716440153827716
+
+Final: train_Loss: 0.049596  	 train_L2: 0.227762	   test_L2: 1.927168
+
+---------------------------------------------------------------
+GPS trained on 4 corners, 90 train 10 test. Takes 8 hours
+
+On 4 corners:
+Train: Final MSE loss:  0.006061, Final train L2 error: 0.081081, final test l2 error 1.351828 (10 samples)
+
+On 3 corners: l2 1.033591, mse 0.651378 (100 samples)
+On 2 corners:  l2 1.018883, mse 0.674294 (100 samples)
+On 1 corner: l2 1.008072, mse 0.764613 (100 samples)
+On 0 corner: l2 1.024977, mse 0.786857 (100 samples)
+On mix: l2 1.036421, mse 0.687837 (100 samples)
+
+
+---------------------------------------------------------------
+GPS trained on mixed dataset, 90 train 10 test
+
+On mixed:
+Train: Final MSE loss:  0.007896, Final train L2 error: 0.094083, final test l2 error 1.301488 (10 samples)
+
+On 4 corners: l2 1.033494, mse 0.847573 (100 samples)
+On 3 corners: l2 1.036881, mse 0.864061 (100 samples)
+On 2 corners: l2 1.031482, mse 0.911664 (100 samples)
+On 1 corner: l2 1.010336, mse 0.885731 (100 samples)
+On 0 corner: l2 1.026244, mse 0.846712 (100 samples)
+
+---------------------------------------------------------------
+Transformer trained on 4 corners, 90 train 10 test
+
+======================================
+4 corner comparison
+
+Shape: 0c
+Test MSE: 0.751263 +- 0.392582 (GPS) 0.840863 +- 0.400903 (Transformer)
+Test L2: 1.018251 +- 0.070439 (GPS) 1.061212 +- 0.199278 (Transformer)
+--------------------------------
+Shape: 1c
+Test MSE: 0.759902 +- 0.398996 (GPS) 0.747225 +- 0.342612 (Transformer)
+Test L2: 1.011859 +- 0.065941 (GPS) 1.014382 +- 0.077893 (Transformer)
+--------------------------------
+Shape: 2c
+Test MSE: 0.683907 (GPS) 0.639020 (Transformer)
+Test L2: 1.019942 (GPS) 1.009979 (Transformer)
+--------------------------------
+Shape: 3c
+Test MSE: 0.635292 (GPS) 0.641895 (Transformer)
+Test L2: 1.030866 (GPS) 1.049516 (Transformer)
+--------------------------------
+Shape: mix
+Test MSE: 0.669174 (GPS) 0.638012 (Transformer)
+Test L2: 1.028785 (GPS) 1.035759 (Transformer)
+=========================================
+
+Transformer trained on mixed dataset, 90 train 10 test
+
+On mixed: Final train_Loss: 0.015362;  train_L2: 0.130970; test_L2: 1.260763
+
+Shape: 0c
+Test L2: 1.023047 +- 0.095736 (GPS) 1.033181 +- 0.126734 (Transformer)
+--------------------------------
+Shape: 1c
+Test MSE: 0.913708 +- 0.497034 (GPS) 0.871815 +- 0.403542 (Transformer)
+Test L2: 1.006264 +- 0.035124 (GPS) 1.035311 +- 0.135254 (Transformer)
+--------------------------------
+Shape: 2c
+Test MSE: 0.925990 +- 0.451330 (GPS) 0.737590 +- 0.407950 (Transformer)
+Test L2: 1.031528 +- 0.111909 (GPS) 1.032582 +- 0.138485 (Transformer)
+--------------------------------
+Shape: 3c
+Test MSE: 0.872710 +- 0.436104 (GPS) 0.846538 +- 0.474683 (Transformer)
+Test L2: 1.038159 +- 0.134966 (GPS) 1.050267 +- 0.174412 (Transformer)
+--------------------------------
+Shape: 4c
+Test MSE: 0.838316 +- 0.415294 (GPS) 0.704605 +- 0.406039 (Transformer)
+Test L2: 1.028781 +- 0.111191 (GPS) 1.034933 +- 0.131559 (Transformer)
+--------------------------------
+Shape: mix
+Test MSE: 0.472688 +- 0.327561 (GPS) 0.096733 +- 0.250752 (Transformer)
+Test L2: 1.029611 +- 0.115065 (GPS) 1.021902 +- 0.135805 (Transformer)
+--------------------------------

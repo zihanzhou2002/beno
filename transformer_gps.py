@@ -81,7 +81,7 @@ class GPSConv(torch.nn.Module):
         dropout: float = 0.0,
         act: str = 'relu',
         act_kwargs: Optional[Dict[str, Any]] = None,
-        norm: Optional[str] = 'batch_norm',
+        norm: Optional[str] = 'layer_norm',
         norm_kwargs: Optional[Dict[str, Any]] = None,
         attn_type: str = 'multihead',
         attn_kwargs: Optional[Dict[str, Any]] = None,
@@ -121,9 +121,9 @@ class GPSConv(torch.nn.Module):
         )
 
         norm_kwargs = norm_kwargs or {}
-        self.norm1 = normalization_resolver(norm, channels, **norm_kwargs)
-        self.norm2 = normalization_resolver(norm, channels, **norm_kwargs)
-        self.norm3 = normalization_resolver(norm, channels, **norm_kwargs)
+        self.norm1 = nn.LayerNorm(channels)
+        self.norm2 = nn.LayerNorm(channels)
+        self.norm3 = nn.LayerNorm(channels)
 
         self.norm_with_batch = False
         if self.norm1 is not None:

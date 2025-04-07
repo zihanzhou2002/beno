@@ -9,7 +9,7 @@ GPS trained on 4 corners, 90 train 10 test. Takes 8 hours
 
 On 4 corners:
 Train: Final MSE loss:  0.006061, Final train L2 error: 0.081081, final test l2 error 1.351828 (10 samples)
-
+MESE: 0.149100 +- 0.427084 L2 1.049214 +- 0.18965908882287477 ()
 On 3 corners: l2 1.033591, mse 0.651378 (100 samples)
 On 2 corners:  l2 1.018883, mse 0.674294 (100 samples)
 On 1 corner: l2 1.008072, mse 0.764613 (100 samples)
@@ -35,51 +35,108 @@ Transformer trained on 4 corners, 90 train 10 test
 ======================================
 4 corner comparison
 
-Shape: 0c
-Test MSE: 0.751263 +- 0.392582 (GPS) 0.840863 +- 0.400903 (Transformer)
-Test L2: 1.018251 +- 0.070439 (GPS) 1.061212 +- 0.199278 (Transformer)
---------------------------------
-Shape: 1c
-Test MSE: 0.759902 +- 0.398996 (GPS) 0.747225 +- 0.342612 (Transformer)
-Test L2: 1.011859 +- 0.065941 (GPS) 1.014382 +- 0.077893 (Transformer)
---------------------------------
-Shape: 2c
-Test MSE: 0.683907 (GPS) 0.639020 (Transformer)
-Test L2: 1.019942 (GPS) 1.009979 (Transformer)
---------------------------------
+BENO-Transformer
+Shape: 4c
+Test MSE: 0.129113 +- 0.355872
+Test L2: 1.041535 +- 0.168459
+BENO-Transformer
 Shape: 3c
-Test MSE: 0.635292 (GPS) 0.641895 (Transformer)
-Test L2: 1.030866 (GPS) 1.049516 (Transformer)
---------------------------------
+Test MSE: 0.641800 +- 0.309088
+Test L2: 1.049483 +- 0.168607
+BENO-Transformer
+Shape: 2c
+Test MSE: 0.639115 +- 0.381611
+Test L2: 1.010004 +- 0.055058
+BENO-Transformer
+Shape: 1c
+Test MSE: 0.747246 +- 0.342523
+Test L2: 1.014358 +- 0.077861
+BENO-Transformer
+Shape: 0c
+Test MSE: 0.841007 +- 0.401048
+Test L2: 1.061227 +- 0.199349
+BENO-Transformer
 Shape: mix
-Test MSE: 0.669174 (GPS) 0.638012 (Transformer)
-Test L2: 1.028785 (GPS) 1.035759 (Transformer)
+Test MSE: 0.637934 +- 0.301172
+Test L2: 1.035743 +- 0.154675
+------------------------------------
+BENO-GPS
+Shape: 4c
+Test MSE: 0.149100 +- 0.427084
+Test L2: 1.049214 +- 0.189659
+BENO-GPS
+Shape: 3c
+Test MSE: 0.431173 +- 0.299210
+Test L2: 1.036623 +- 0.142341
+BENO-GPS
+Shape: 2c
+Test MSE: 0.483940 +- 0.283265
+Test L2: 1.043320 +- 0.156840
+BENO-GPS
+Shape: 1c
+Test MSE: 0.588235 +- 0.360109
+Test L2: 1.037798 +- 0.150868
+BENO-GPS
+Shape: 0c
+Test MSE: 0.585513 +- 0.379586
+Test L2: 1.042139 +- 0.146388
+BENO-GPS
+Shape: mix
+Test MSE: 0.476420 +- 0.301533
+Test L2: 1.026338 +- 0.130338
+
 =========================================
 
-Transformer trained on mixed dataset, 90 train 10 test
+Comparison on mixed
 
-On mixed: Final train_Loss: 0.015362;  train_L2: 0.130970; test_L2: 1.260763
 
-Shape: 0c
-Test L2: 1.023047 +- 0.095736 (GPS) 1.033181 +- 0.126734 (Transformer)
---------------------------------
-Shape: 1c
-Test MSE: 0.913708 +- 0.497034 (GPS) 0.871815 +- 0.403542 (Transformer)
-Test L2: 1.006264 +- 0.035124 (GPS) 1.035311 +- 0.135254 (Transformer)
---------------------------------
-Shape: 2c
-Test MSE: 0.925990 +- 0.451330 (GPS) 0.737590 +- 0.407950 (Transformer)
-Test L2: 1.031528 +- 0.111909 (GPS) 1.032582 +- 0.138485 (Transformer)
---------------------------------
-Shape: 3c
-Test MSE: 0.872710 +- 0.436104 (GPS) 0.846538 +- 0.474683 (Transformer)
-Test L2: 1.038159 +- 0.134966 (GPS) 1.050267 +- 0.174412 (Transformer)
---------------------------------
+BENO-GPS
 Shape: 4c
-Test MSE: 0.838316 +- 0.415294 (GPS) 0.704605 +- 0.406039 (Transformer)
-Test L2: 1.028781 +- 0.111191 (GPS) 1.034933 +- 0.131559 (Transformer)
---------------------------------
+Test MSE: 0.463360 +- 0.2541227678934434
+Test L2: 1.037194 +- 0.142471920190603
+BENO-GPS
+Shape: 3c
+Test MSE: 0.481566 +- 0.3212278807926008
+Test L2: 1.048010 +- 0.16105311416171808
+BENO-GPS
+Shape: 2c
+Test MSE: 0.510780 +- 0.34823720949374937
+Test L2: 1.036878 +- 0.14511701352452067
+BENO-GPS
+Shape: 1c
+Test MSE: 0.612952 +- 0.3051837649869961
+Test L2: 1.031957 +- 0.1202344085856064
+BENO-GPS
+Shape: 0c
+Test MSE: 0.581438 +- 0.37883871926011836
+Test L2: 1.039324 +- 0.1387944167219164
+BENO-GPS
 Shape: mix
-Test MSE: 0.472688 +- 0.327561 (GPS) 0.096733 +- 0.250752 (Transformer)
-Test L2: 1.029611 +- 0.115065 (GPS) 1.021902 +- 0.135805 (Transformer)
---------------------------------
+Test MSE: 0.085920 +- 0.23277837685982636
+Test L2: 1.020944 +- 0.1269953874690046
+
+----------------------------------------------
+BENO-Transformer
+Shape: 4c
+Test MSE: 0.129113 +- 0.355872
+Test L2: 1.041535 +- 0.168459
+BENO-Transformer
+Shape: 3c
+Test MSE: 0.641800 +- 0.309088
+Test L2: 1.049483 +- 0.168607
+BENO-Transformer
+Shape: 2c
+Test MSE: 0.639115 +- 0.381611
+Test L2: 1.010004 +- 0.055058
+BENO-Transformer
+Shape: 1c
+Test MSE: 0.747246 +- 0.342523
+Test L2: 1.014358 +- 0.077861
+BENO-Transformer
+Shape: 0c
+Test MSE: 0.841007 +- 0.401048
+Test L2: 1.061227 +- 0.199349
+BENO-Transformer
+Shape: mix
+Test MSE: 0.637934 +- 0.301172
+Test L2: 1.035743 +- 0.154675

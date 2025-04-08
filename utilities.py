@@ -179,7 +179,7 @@ class LpLoss(object):
     def rel(self, x, y):
         num_examples = x.size()[0]  #x.size()=[1,num_indomain]
         
-        diff_norms = torch.norm(x.reshape(num_examples,-1) - y.reshape(num_examples,-1), self.p, 1) #pred-gd 求L2范数
+        diff_norms = torch.norm(x.reshape(num_examples,-1) - y.reshape(num_examples,-1), self.p, 1) #pred-gd 
         y_norms = torch.norm(y.reshape(num_examples,-1), self.p, 1)
 
         if self.reduction:

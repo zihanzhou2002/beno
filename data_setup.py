@@ -161,7 +161,7 @@ def make_graph(f_all, bc_all, sol_all, resolution, ntrain, ntest):
         dist2bd_x = torch.tensor(dist2bd_x[1:]).float() # [num, 2]
 
 
-        idx = meshgenerator.sample(mesh_idx_temp)  #这一步只是将indomain的idx输入，并赋给get_grid
+        idx = meshgenerator.sample(mesh_idx_temp)  
         grid = meshgenerator.get_grid()
 
         xx=to_np_array(grid[:,0])

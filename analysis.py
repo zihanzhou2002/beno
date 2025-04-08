@@ -321,14 +321,14 @@ a_ori_all=np.array([])
 with torch.no_grad():
     for ii, data in enumerate(test_loader):
         data = data.to(device)
-        out_indomain = model(data)  #out_indomain tensor  [indomain点个数，1]
+        out_indomain = model(data)  #out_indomain tensor  [number of nodes in the innner domain，1]
         
         data_all = torch.zeros((resolution*resolution, 10)).to(device)  #data_all.shape=[1024,6]
         out = torch.zeros((resolution*resolution,1)).to(device)  
         label = torch.zeros((resolution*resolution)).to(device)   #label.shape=[1024]
         
         
-        out[data['G1'].sample_idx] = out_indomain  #data.sample_idx: tensor  一维  #out.shape=[1,1024]
+        out[data['G1'].sample_idx] = out_indomain  #data.sample_idx: tensor  1-dimensional #out.shape=[1,1024]
         label[data['G1'].sample_idx] = data['G1+2'].y
         data_all[data['G1'].sample_idx,:] = data['G1'].x
         

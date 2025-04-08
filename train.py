@@ -84,11 +84,12 @@ pp.pprint(args.__dict__)
 # ntest =100
 ## ===============================================================
 
+cwd =os.getcwd()
 
-DATA_PATH = f"C:/Users/zzh/Desktop/Oxford/GeometricDeepLearning/beno/data/"
-f_all = np.load(DATA_PATH + "RHS_N32_10.npy")
-sol_all = np.load(DATA_PATH + "SOL_N32_10.npy")
-bc_all=np.load(DATA_PATH + "BC_N32_10.npy")
+DATA_PATH = os.path.join(cwd, "beno\\data")
+f_all = np.load(DATA_PATH + "\\RHS_N32_10.npy")
+sol_all = np.load(DATA_PATH + "\\SOL_N32_10.npy")
+bc_all=np.load(DATA_PATH + "\\BC_N32_10.npy")
 ntrain = 7
 ntest =3
 # ===============================================================
@@ -241,7 +242,7 @@ for j in range(ntrain):
     dist2bd_x = torch.tensor(dist2bd_x[1:]).float() # [num, 2]
 
     
-    idx = meshgenerator.sample(mesh_idx_temp)  #这一步只是将indomain的idx输入，并赋给get_grid
+    idx = meshgenerator.sample(mesh_idx_temp) 
     grid = meshgenerator.get_grid()
     
     xx=to_np_array(grid[:,0])

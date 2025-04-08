@@ -104,8 +104,6 @@ Shape: mix
 Train MSE: 0.008483 +- 0.003561
 Test MSE: 0.782847 +- 0.045473
 Average MSE: 0.085920 +- 0.232778
-Train L2: 0.995350 +- 0.000039
-Test L2: 1.251293 +- 0.319878
 Average L2: 1.020944 +- 0.126995
 
 ----------------------------------------------
@@ -114,46 +112,39 @@ Shape: 4c
 Train MSE: 0.706455 +- 0.421281
 Test MSE: 0.687004 +- 0.226680
 Average MSE: 0.704510 +- 0.406081
-Train L2: 0.997598 +- 0.001210
-Test L2: 1.371004 +- 0.217995
 Average L2: 1.034938 +- 0.131539
+
 BENO-Transformer
 Shape: 3c
 Train MSE: 0.826702 +- 0.495970
 Test MSE: 1.022792 +- 0.053871
 Average MSE: 0.846311 +- 0.474487
-Train L2: 0.997898 +- 0.001223
-Test L2: 1.520982 +- 0.239218
 Average L2: 1.050206 +- 0.174211
+
 BENO-Transformer
 Shape: 2c
 Train MSE: 0.701585 +- 0.408511
 Test MSE: 1.063276 +- 0.211893
 Average MSE: 0.737754 +- 0.407991
-Train L2: 0.997396 +- 0.001163
-Test L2: 1.349347 +- 0.283848
 Average L2: 1.032591 +- 0.138587
+
 BENO-Transformer
 Shape: 1c
 Train MSE: 0.870646 +- 0.421200
 Test MSE: 0.882616 +- 0.186798
 Average MSE: 0.871843 +- 0.403944
-Train L2: 0.998090 +- 0.000968
-Test L2: 1.370246 +- 0.241626
 Average L2: 1.035305 +- 0.135293
+
 BENO-Transformer
 Shape: 0c
 Train MSE: 0.776645 +- 0.352696
 Test MSE: 0.779659 +- 0.091214
 Average MSE: 0.776946 +- 0.335839
-Train L2: 0.997496 +- 0.001129
-Test L2: 1.354726 +- 0.214234
 Average L2: 1.033219 +- 0.126791
+
 BENO-Transformer
 Shape: mix
 Train MSE: 0.015403 +- 0.006028
 Test MSE: 0.828780 +- 0.182426
 Average MSE: 0.096741 +- 0.250805
-Train L2: 0.995391 +- 0.000063
-Test L2: 1.260327 +- 0.348284
 Average L2: 1.021884 +- 0.135821

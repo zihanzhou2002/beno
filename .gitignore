@@ -161,3 +161,4 @@ cython_debug/
 #results/
 "results/Resolution_32_poisson_ntrain90_kerwidth256_bd_enc_transformer3_Rollingregular_shapemix_ns100_nheads4_bddim128_actsilulr5e-05_nmlp_layers3_epochs1000.zip" 
 "results/*.zip" 
+"results/" 
